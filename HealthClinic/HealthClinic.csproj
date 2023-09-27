@@ -28,8 +28,6 @@
     <Folder Include="Controllers\" />
     <Folder Include="Migrations\" />
     <Folder Include="Repositories\" />
-    <Folder Include="Utils\Cryptography\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>
