@@ -4,8 +4,8 @@ namespace HealthClinic.Interfaces
 {
     public interface IClinicRepository
     {
-        void Create(MedicalSpecialty medSpecialty);
+        void Create(Clinic clinic);
         void Delete(Guid id);
-        List<MedicalSpecialty> List();
+        List<Clinic> List();
     }
 }

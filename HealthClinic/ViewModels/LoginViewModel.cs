@@ -4,10 +4,10 @@ namespace HealthClinic.ViewModels
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "O Email é obrigatório")]
+        [Required(ErrorMessage = "The 'Email' field is required.")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "A senha é obrigatória")]
-        public string Senha { get; set; }
+        [Required(ErrorMessage = "The 'Password' field is required.")]
+        public string Password { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace HealthClinic.Domains
         [Key]
         public Guid UserId { get; set; } = Guid.NewGuid();
 
-        [Required(ErrorMessage = "The 'UserID' field is required.")]
+        [Required(ErrorMessage = "The 'Name' field is required.")]
         [Column(TypeName = "VARCHAR(64)")]
         public string Name { get; set; }
 

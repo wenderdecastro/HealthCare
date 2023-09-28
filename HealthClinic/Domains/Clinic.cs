@@ -11,18 +11,26 @@ namespace HealthClinic.Domains
         [Key]
         public Guid ClinicId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The 'TradeName' field is required.")]
         [Column(TypeName = "VARCHAR(256)")]
         public string TradeName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "The 'CPNJ' field is required.")]
         [Column(TypeName = "VARCHAR(14)")]
         [StringLength(14)]
         public string CPNJ { get; set; }
 
-        [Required]
-        [Column(TypeName = "VARCHAR(10)")]
-        public string BusinessHours { get; set; }
+        [Required(ErrorMessage = "The 'OpeningTime' field is required.")]
+        [Column(TypeName = "TIME")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh:mm")]
+        public TimeSpan OpeningTime { get; set; }
+        
+        [Required(ErrorMessage = "The 'ClosingTime' field is required.")]
+        [Column(TypeName = "TIME")]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh:mm")]
+        public TimeSpan ClosingTime { get; set; }
 
         [Required]
         [Column(TypeName = "VARCHAR(256)")]

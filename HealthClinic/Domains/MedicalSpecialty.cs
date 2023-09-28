@@ -7,7 +7,7 @@ namespace HealthClinic.Domains
     public class MedicalSpecialty
     {
         [Key]
-        public Guid SpecialtyId { get; set; } = Guid.NewGuid();
+        public Guid MedicalSpecialtyId { get; set; } = Guid.NewGuid();
 
         [Required(ErrorMessage = "The 'Specialty' field is required.")]
         [Column(TypeName = "VARCHAR(64)")]

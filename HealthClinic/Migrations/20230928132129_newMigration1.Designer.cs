@@ -4,6 +4,7 @@ using HealthClinic.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthCare.Migrations
 {
     [DbContext(typeof(HealthClinicContext))]
-    partial class HealthClinicContextModelSnapshot : ModelSnapshot
+    [Migration("20230928132129_newMigration1")]
+    partial class newMigration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -145,9 +148,6 @@ namespace HealthCare.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("BIT");
-
                     b.Property<Guid>("MedicId")
                         .HasColumnType("uniqueidentifier");
 
@@ -168,7 +168,7 @@ namespace HealthCare.Migrations
 
             modelBuilder.Entity("HealthClinic.Domains.MedicalSpecialty", b =>
                 {
-                    b.Property<Guid>("MedicalSpecialtyId")
+                    b.Property<Guid>("SpecialtyId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -176,7 +176,7 @@ namespace HealthCare.Migrations
                         .IsRequired()
                         .HasColumnType("VARCHAR(64)");
 
-                    b.HasKey("MedicalSpecialtyId");
+                    b.HasKey("SpecialtyId");
 
                     b.ToTable("MedicalSpecialty");
                 });
