@@ -6,10 +6,10 @@ namespace HealthClinic.Interfaces
     {
 
         void Create(MedicalAppointment medAppointment);
-        void Cancel(int id);
+        void Cancel(Guid medAppointmentId);
         List<MedicalAppointment> List();
-        MedicalAppointment SearchById(int id);
-        List<MedicalAppointment> SearchByPatient(MedicalAppointment medAppointment, Guid userId);
-        void Update(int id, string description);
+        MedicalAppointment SearchById(Guid medAppointmentId);
+        List<MedicalAppointment> SearchByPatient(Guid userId);
+        void UpdateDescription(Guid medAppointmentId, string description);
     }
 }

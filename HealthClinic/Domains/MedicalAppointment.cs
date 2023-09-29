@@ -8,8 +8,7 @@ namespace HealthClinic.Domains
     public class MedicalAppointment
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MedicalAppointmentId { get; set; }
+        public Guid MedicalAppointmentId { get; set; } = Guid.NewGuid();
 
         [Required(ErrorMessage = "The 'PatientId' field is required.")]
         public Guid PatientId { get; set; }
@@ -32,7 +31,7 @@ namespace HealthClinic.Domains
         [Column(TypeName = "TIME")]
         [Required(ErrorMessage = "The 'Time' field is required.")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh:mm")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh\:mm")]
         public TimeSpan Time { get; set; }
 
 

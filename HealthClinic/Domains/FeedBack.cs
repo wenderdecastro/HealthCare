@@ -21,11 +21,11 @@ namespace HealthClinic.Domains
         [ForeignKey(nameof(MedicId))]
         public Medic Medic { get; set; }
 
-        [Required(ErrorMessage = "The 'UserId' field is required.")]
-        public Guid UserId { get; set; }
+        [Required(ErrorMessage = "The 'PatientId' field is required.")]
+        public Guid PatientId { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        [ForeignKey(nameof(PatientId))]
+        public Patient Patient { get; set; }
 
         [Required(ErrorMessage = "The 'MedicalAppointmentId' field is required.")]
         public int MedicalAppointmentId { get; set; }

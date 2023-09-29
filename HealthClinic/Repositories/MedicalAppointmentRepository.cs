@@ -13,7 +13,7 @@ namespace HealthClinic.Repositories
             _clinicContext = new HealthClinicContext();
         }
 
-        public void Cancel(int id)
+        public void Cancel(Guid id)
         {
             try
             {
@@ -51,19 +51,19 @@ namespace HealthClinic.Repositories
             return _clinicContext.MedicalAppointments.ToList();
         }
 
-        public MedicalAppointment SearchById(int id)
+        public MedicalAppointment SearchById(Guid id)
         {
             MedicalAppointment foundAppointment = _clinicContext.MedicalAppointments.Find(id);
 
             return foundAppointment;
         }
 
-        public List<MedicalAppointment> SearchByPatient(MedicalAppointment medAppointment, Guid patientId)
+        public List<MedicalAppointment> SearchByPatient(Guid patientId)
         {
             return _clinicContext.MedicalAppointments.Where(u => u.PatientId == patientId).ToList();
         }
 
-        public void Update(int id, string description)
+        public void Update(Guid id, string description)
         {
             MedicalAppointment foundAppointment = _clinicContext.MedicalAppointments.Find(id);
 

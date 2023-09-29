@@ -1,52 +1,45 @@
 ﻿using HealthClinic.Contexts;
 using HealthClinic.Domains;
 using HealthClinic.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace HealthClinic.Repositories
 {
-    public class MedicalSpecialtyRepository : IMedicalSpecialtyRepository
+    public class FeedBackRepository : IFeedBackRepository
     {
         private readonly HealthClinicContext _clinicContext;
-        public MedicalSpecialtyRepository()
+        public FeedBackRepository()
         {
             _clinicContext = new HealthClinicContext();
         }
-
-        public void Create(MedicalSpecialty specialty)
+        public void Create(FeedBack feedBack)
         {
             try
             {
-                _clinicContext.MedicalSpecialties.Add(specialty);
+                _clinicContext.FeedBacks.Add(feedBack);
                 _clinicContext.SaveChanges();
             }
             catch (Exception)
             {
                 throw;
             }
-
         }
-
-        public void Delete(Guid id)
+        public List<FeedBack> List()
         {
-
             try
             {
-                _clinicContext.MedicalSpecialties.Where(ms => ms.MedicalSpecialtyId == id).ExecuteDelete();
+                return _clinicContext.FeedBacks.ToList();
             }
             catch (Exception)
             {
                 throw;
             }
-
         }
 
-        public List<MedicalSpecialty> GetByMedic(Guid medicId)
+        public List<FeedBack> SearchByUser(Guid patientId)
         {
             try
             {
-                //return _clinicContext.MedicalAppointments.Where(f => f.MedicId == medicId).ToList();
-                throw new NotImplementedException();
+                return _clinicContext.FeedBacks.Where(f => f.PatientId == patientId).ToList();
             }
             catch (Exception)
             {
@@ -55,11 +48,18 @@ namespace HealthClinic.Repositories
             }
         }
 
-        public List<MedicalSpecialty> List()
+        public void ToggleShow(Guid id)
         {
             try
             {
-                return _clinicContext.MedicalSpecialties.ToList();
+                FeedBack foundComment = _clinicContext.FeedBacks.Find(id);
+                if (foundComment != null)
+                {
+                    foundComment.IsShown = !foundComment.IsShown;
+
+                    _clinicContext.FeedBacks.Update(foundComment);
+                    _clinicContext.SaveChanges();
+                }
             }
             catch (Exception)
             {

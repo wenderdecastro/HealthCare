@@ -82,6 +82,7 @@ namespace HealthClinic.Controllers
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.InnerException);
                 return BadRequest(e.Message);
             }
         }

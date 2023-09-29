@@ -21,16 +21,16 @@ namespace HealthClinic.Domains
         public string CPNJ { get; set; }
 
         [Required(ErrorMessage = "The 'OpeningTime' field is required.")]
-        [Column(TypeName = "TIME")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh:mm")]
-        public TimeSpan OpeningTime { get; set; }
+        [Column(TypeName = "TIME")  ]
+        [DataType(DataType.Time)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh\:mm:ss")]
+        public TimeSpan? OpeningTime { get; set; }
         
         [Required(ErrorMessage = "The 'ClosingTime' field is required.")]
         [Column(TypeName = "TIME")]
         [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh:mm")]
-        public TimeSpan ClosingTime { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = @"hh\:mm:ss")]
+        public TimeSpan? ClosingTime { get; set; }
 
         [Required]
         [Column(TypeName = "VARCHAR(256)")]

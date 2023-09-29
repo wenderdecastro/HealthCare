@@ -9,23 +9,22 @@ namespace HealthClinic.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
-    public class UserController : ControllerBase
+    public class MedicalAppointmentController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IMedicalAppointmentRepository _medicalAppointmentRepository;
 
-        public UserController()
+        public MedicalAppointmentController()
         {
-            _userRepository = new UserRepository();
+            _medicalAppointmentRepository = new MedicalAppointmentRepository();
         }
 
         [HttpPost]
-        public IActionResult Create(User user)
+        public IActionResult Create(MedicalAppointment medicalAppointment)
         {
             try
             {
-                _userRepository.Create(user);
-
-                return Created("User created.", user);
+                _medicalAppointmentRepository.Create(medicalAppointment);
+                return Created("MedicalAppointment created.", medicalAppointment);
             }
             catch (Exception e)
             {
@@ -35,11 +34,11 @@ namespace HealthClinic.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult List()
         {
             try
             {
-                return Ok(_userRepository.List());
+                return Ok(_medicalAppointmentRepository.List());
             }
             catch (Exception e)
             {
@@ -49,29 +48,12 @@ namespace HealthClinic.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Update(Guid id, User user)
+        public IActionResult Cancel(Guid medAppointmentId)
         {
             try
             {
-                _userRepository.Update(id, user);
-
-                return NoContent();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException);
-                return BadRequest(e.Message);
-            }
-        }
-
-        [HttpDelete]
-        public IActionResult Delete(Guid id)
-        {
-            try
-            {
-                _userRepository.Delete(id);
-
-                return NoContent();
+                _medicalAppointmentRepository.Cancel(medAppointmentId);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -81,40 +63,12 @@ namespace HealthClinic.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(Guid id)
+        public IActionResult SearchById(Guid medAppointmentId)
         {
             try
             {
-                User foundUser = _userRepository.SearchById(id);
-
-                if (foundUser != null)
-                {
-                    return Ok(foundUser);
-                }
-
-                return NotFound();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.InnerException);
-                return BadRequest(e.Message);
-            }
-
-        }
-
-        [HttpPost("UserLogin")]
-        public IActionResult SearchByLogin(User user)
-        {
-            try
-            {
-                User foundUser = _userRepository.SearchByEmailAndPassword(user);
-
-                if (foundUser != null)
-                {
-                    return Ok(foundUser);
-                }
-
-                return NotFound();
+                MedicalAppointment foundMedAppoint = _medicalAppointmentRepository.SearchById(medAppointmentId);
+                return Ok(foundMedAppoint);
             }
             catch (Exception e)
             {
@@ -122,6 +76,36 @@ namespace HealthClinic.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [HttpGet("{patientId}")]
+        public IActionResult SearchByPatient(Guid patientId)
+        {
+            try
+            {
+                return Ok(_medicalAppointmentRepository.SearchByPatient(patientId));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPatch]
+        public IActionResult Update(Guid medAppointmentId, string description)
+        {
+            try
+            {
+                _medicalAppointmentRepository.UpdateDescription(medAppointmentId, description)
+                return Accepted();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+                return BadRequest(e.Message);
+            }
+        }
+
 
     }
 }
