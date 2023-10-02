@@ -18,6 +18,12 @@ namespace HealthClinic.Domains
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
 
+        [Required(ErrorMessage = "The 'MedicalRecordId' field is required.")]
+        public Guid MedicalRecordID { get; set; }
+
+        [ForeignKey(nameof(MedicalRecordID))]
+        public MedicalRecords MedicalRecords { get; set; }
+
         [Required(ErrorMessage = "The 'CPF' field is required.")]
         [Column(TypeName = "VARCHAR(11)")]
         [StringLength(11)]

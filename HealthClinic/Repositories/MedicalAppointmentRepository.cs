@@ -63,7 +63,7 @@ namespace HealthClinic.Repositories
             return _clinicContext.MedicalAppointments.Where(u => u.PatientId == patientId).ToList();
         }
 
-        public void Update(Guid id, string description)
+        public void UpdateDescription(Guid id, string description)
         {
             MedicalAppointment foundAppointment = _clinicContext.MedicalAppointments.Find(id);
 

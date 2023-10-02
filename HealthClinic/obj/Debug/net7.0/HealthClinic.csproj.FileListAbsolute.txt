@@ -80,3 +80,4 @@ C:\Users\57267874800\Desktop\HealthClinic\HealthClinic\obj\Debug\net7.0\refint\H
 C:\Users\57267874800\Desktop\HealthClinic\HealthClinic\obj\Debug\net7.0\HealthClinic.pdb
 C:\Users\57267874800\Desktop\HealthClinic\HealthClinic\obj\Debug\net7.0\HealthClinic.genruntimeconfig.cache
 C:\Users\57267874800\Desktop\HealthClinic\HealthClinic\obj\Debug\net7.0\ref\HealthClinic.dll
+C:\Users\57267874800\Desktop\HealthClinic\HealthClinic\bin\Debug\net7.0\Utils\CID\cid10.json

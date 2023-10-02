@@ -47,7 +47,7 @@ namespace HealthClinic.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPatch("{id}")]
         public IActionResult Cancel(Guid medAppointmentId)
         {
             try
@@ -96,8 +96,8 @@ namespace HealthClinic.Controllers
         {
             try
             {
-                _medicalAppointmentRepository.UpdateDescription(medAppointmentId, description)
-                return Accepted();
+                _medicalAppointmentRepository.UpdateDescription(medAppointmentId, description);
+                return NoContent();
             }
             catch (Exception e)
             {

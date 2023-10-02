@@ -12,6 +12,7 @@ namespace HealthClinic.Contexts
         public DbSet<MedicalSpecialty> MedicalSpecialties { get; set; }
         public DbSet<Patient> Patients { get; set; }
         public DbSet<FeedBack> FeedBacks { get; set; }
+        public DbSet<MedicalRecords> MedicalRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

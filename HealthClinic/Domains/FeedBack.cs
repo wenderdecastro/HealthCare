@@ -28,7 +28,7 @@ namespace HealthClinic.Domains
         public Patient Patient { get; set; }
 
         [Required(ErrorMessage = "The 'MedicalAppointmentId' field is required.")]
-        public int MedicalAppointmentId { get; set; }
+        public Guid MedicalAppointmentId { get; set; }
 
         [ForeignKey(nameof(MedicalAppointmentId))]
         public MedicalAppointment MedicalAppointment { get; set; }
