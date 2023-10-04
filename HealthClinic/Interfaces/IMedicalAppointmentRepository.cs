@@ -10,6 +10,7 @@ namespace HealthClinic.Interfaces
         List<MedicalAppointment> List();
         MedicalAppointment SearchById(Guid medAppointmentId);
         List<MedicalAppointment> SearchByPatient(Guid userId);
-        void UpdateDescription(Guid medAppointmentId, string description);
+
+        List<MedicalAppointment> SearchByMedic(Guid medicId);
     }
 }

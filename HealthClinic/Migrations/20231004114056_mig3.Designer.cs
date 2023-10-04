@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthClinic.Migrations
 {
     [DbContext(typeof(HealthClinicContext))]
-    [Migration("20231002131007_teste")]
-    partial class teste
+    [Migration("20231004114056_mig3")]
+    partial class mig3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,20 +24,6 @@ namespace HealthClinic.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("HealthClinic.Domains.CID", b =>
-                {
-                    b.Property<string>("Codigo")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR");
-
-                    b.HasKey("Codigo");
-
-                    b.ToTable("CID");
-                });
 
             modelBuilder.Entity("HealthClinic.Domains.Clinic", b =>
                 {
@@ -155,12 +141,11 @@ namespace HealthClinic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("ClinicId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("DATE");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("BIT");
@@ -175,6 +160,8 @@ namespace HealthClinic.Migrations
                         .HasColumnType("TIME");
 
                     b.HasKey("MedicalAppointmentId");
+
+                    b.HasIndex("ClinicId");
 
                     b.HasIndex("MedicId");
 
@@ -191,37 +178,32 @@ namespace HealthClinic.Migrations
 
                     b.Property<string>("Allergies")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("CID")
-                        .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("VARCHAR(5096)");
 
                     b.Property<string>("ChiefComplaint")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("VARCHAR(5096)");
 
                     b.Property<string>("Diagnostic")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("VARCHAR(5096)");
 
-                    b.Property<Guid?>("MedicalRecordsMedicalRecordID")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("MedicalHistory")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(5096)");
 
                     b.Property<Guid>("PatientId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Prescription")
                         .IsRequired()
-                        .HasColumnType("VARCHAR");
+                        .HasColumnType("VARCHAR(5096)");
 
                     b.Property<string>("Symptoms")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MedicalRecordID");
-
-                    b.HasIndex("MedicalRecordsMedicalRecordID");
 
                     b.HasIndex("PatientId")
                         .IsUnique();
@@ -258,9 +240,6 @@ namespace HealthClinic.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("VARCHAR(11)");
 
-                    b.Property<Guid>("MedicalRecordID")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Sex")
                         .IsRequired()
                         .HasColumnType("CHAR(1)");
@@ -271,9 +250,6 @@ namespace HealthClinic.Migrations
                     b.HasKey("PatientId");
 
                     b.HasIndex("CPF")
-                        .IsUnique();
-
-                    b.HasIndex("MedicalRecordID")
                         .IsUnique();
 
                     b.HasIndex("UserId");
@@ -374,6 +350,12 @@ namespace HealthClinic.Migrations
 
             modelBuilder.Entity("HealthClinic.Domains.MedicalAppointment", b =>
                 {
+                    b.HasOne("HealthClinic.Domains.Clinic", "Clinic")
+                        .WithMany()
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HealthClinic.Domains.Medic", "Medic")
                         .WithMany()
                         .HasForeignKey("MedicId")
@@ -386,6 +368,8 @@ namespace HealthClinic.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Clinic");
+
                     b.Navigation("Medic");
 
                     b.Navigation("Patient");
@@ -393,10 +377,6 @@ namespace HealthClinic.Migrations
 
             modelBuilder.Entity("HealthClinic.Domains.MedicalRecords", b =>
                 {
-                    b.HasOne("HealthClinic.Domains.MedicalRecords", null)
-                        .WithMany("PreviousMedicalRecords")
-                        .HasForeignKey("MedicalRecordsMedicalRecordID");
-
                     b.HasOne("HealthClinic.Domains.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
@@ -408,26 +388,13 @@ namespace HealthClinic.Migrations
 
             modelBuilder.Entity("HealthClinic.Domains.Patient", b =>
                 {
-                    b.HasOne("HealthClinic.Domains.MedicalRecords", "MedicalRecords")
-                        .WithOne()
-                        .HasForeignKey("HealthClinic.Domains.Patient", "MedicalRecordID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HealthClinic.Domains.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MedicalRecords");
-
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("HealthClinic.Domains.MedicalRecords", b =>
-                {
-                    b.Navigation("PreviousMedicalRecords");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,14 +6,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HealthClinic.Repositories
 {
+    /// <summary>
+    /// Repositório para operações relacionadas a usuários.
+    /// </summary>
     public class UserRepository : IUserRepository
     {
+        /// <summary>
+        /// Contexto do banco de dados da clínica de saúde.
+        /// </summary>
         private readonly HealthClinicContext _clinicContext;
+
+        /// <summary>
+        /// Construtor padrão que inicializa o contexto do banco de dados.
+        /// </summary>
         public UserRepository()
         {
             _clinicContext = new HealthClinicContext();
         }
 
+        /// <summary>
+        /// Cria um novo usuário.
+        /// </summary>
+        /// <param name="user">O usuário a ser criado.</param>
         public void Create(User user)
         {
             try
@@ -27,12 +41,14 @@ namespace HealthClinic.Repositories
             {
                 throw;
             }
-
         }
 
+        /// <summary>
+        /// Exclui um usuário por ID.
+        /// </summary>
+        /// <param name="id">O ID do usuário a ser excluído.</param>
         public void Delete(Guid id)
         {
-
             try
             {
                 _clinicContext.Users.Where(u => u.UserId == id).ExecuteDelete();
@@ -41,9 +57,12 @@ namespace HealthClinic.Repositories
             {
                 throw;
             }
-
         }
 
+        /// <summary>
+        /// Lista todos os usuários.
+        /// </summary>
+        /// <returns>Uma lista de usuários.</returns>
         public List<User> List()
         {
             try
@@ -56,6 +75,11 @@ namespace HealthClinic.Repositories
             }
         }
 
+        /// <summary>
+        /// Procura um usuário por e-mail e senha.
+        /// </summary>
+        /// <param name="user">O usuário contendo e-mail e senha.</param>
+        /// <returns>O usuário encontrado ou nulo se não encontrado.</returns>
         public User SearchByEmailAndPassword(User user)
         {
             try
@@ -73,19 +97,18 @@ namespace HealthClinic.Repositories
             {
                 throw;
             }
-
         }
 
+        /// <summary>
+        /// Procura um usuário por ID.
+        /// </summary>
+        /// <param name="id">O ID do usuário a ser procurado.</param>
+        /// <returns>O usuário encontrado ou nulo se não encontrado.</returns>
         public User SearchById(Guid id)
         {
             try
             {
                 User foundUser = _clinicContext.Users.FirstOrDefault(u => u.UserId == id);
-
-                if (foundUser != null)
-                {
-                    return foundUser;
-                }
 
                 return foundUser;
             }
@@ -93,9 +116,13 @@ namespace HealthClinic.Repositories
             {
                 throw;
             }
-
         }
 
+        /// <summary>
+        /// Atualiza um usuário por ID.
+        /// </summary>
+        /// <param name="id">O ID do usuário a ser atualizado.</param>
+        /// <param name="user">O usuário com informações atualizadas.</param>
         public void Update(Guid id, User user)
         {
             try
@@ -110,16 +137,13 @@ namespace HealthClinic.Repositories
                     foundUser.Password = user.Password;
 
                     _clinicContext.Users.Update(foundUser);
-
                     _clinicContext.SaveChanges();
                 }
             }
             catch (Exception)
             {
-
                 throw;
             }
-
         }
     }
 }

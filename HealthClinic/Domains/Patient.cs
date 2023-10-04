@@ -16,13 +16,13 @@ namespace HealthClinic.Domains
         public Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
 
-        [Required(ErrorMessage = "The 'MedicalRecordId' field is required.")]
-        public Guid MedicalRecordID { get; set; }
+        //[Required(ErrorMessage = "The 'MedicalRecordId' field is required.")]
+    
 
-        [ForeignKey(nameof(MedicalRecordID))]
-        public MedicalRecords MedicalRecords { get; set; }
+        //[ForeignKey(nameof(MedicalRecordID))]
+        //public MedicalRecords MedicalRecords { get; set; }
 
         [Required(ErrorMessage = "The 'CPF' field is required.")]
         [Column(TypeName = "VARCHAR(11)")]

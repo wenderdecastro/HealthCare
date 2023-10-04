@@ -16,19 +16,19 @@ namespace HealthClinic.Domains
         public Guid UserId { get; set; }
 
         [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public User? User { get; set; }
 
         [Required(ErrorMessage = "The 'SpecialtyId' field is required.")]
         public Guid SpecialtyId { get; set; }
 
         [ForeignKey(nameof(SpecialtyId))]
-        public MedicalSpecialty Specialty { get; set; }
+        public MedicalSpecialty? Specialty { get; set; }
 
         [Required(ErrorMessage = "The 'ClinicId' field is required.")]
         public Guid ClinicId { get; set; }
 
         [ForeignKey(nameof(ClinicId))]
-        public Clinic Clinic { get; set; }
+        public Clinic? Clinic { get; set; }
 
         [Column(TypeName = "VARCHAR(8)")]
         [StringLength(8)]

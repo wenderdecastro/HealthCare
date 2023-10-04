@@ -11,18 +11,31 @@ using System.Text;
 
 namespace HealthClinic.Controllers
 {
+    /// <summary>
+    /// Controlador para operações relacionadas a autenticação e geração de tokens JWT.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-
+        /// <summary>
+        /// Repositório de usuários.
+        /// </summary>
         private readonly IUserRepository _userRepository;
 
+        /// <summary>
+        /// Construtor padrão que inicializa o repositório de usuários.
+        /// </summary>
         public LoginController()
         {
             _userRepository = new UserRepository();
         }
 
+        /// <summary>
+        /// Realiza a autenticação do usuário e gera um token JWT se a autenticação for bem-sucedida.
+        /// </summary>
+        /// <param name="login">As credenciais de login do usuário.</param>
+        /// <returns>Uma resposta HTTP contendo o token JWT se a autenticação for bem-sucedida.</returns>
         [HttpPost]
         public IActionResult Login(LoginViewModel login)
         {
@@ -34,51 +47,46 @@ namespace HealthClinic.Controllers
                     Password = login.Password
                 };
 
-
                 User foundUser = _userRepository.SearchByEmailAndPassword(userLogin);
-                
-                if(foundUser != null)
-                {
-                    //1º, define as informações do token (payload), como parametro estão as propriedades do usuário que serão inseridas no token
 
+                if (foundUser != null)
+                {
+                    // Define as informações do token (payload), como parâmetros estão as propriedades do usuário que serão inseridas no token
                     var claims = new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Jti, foundUser.UserId.ToString() ),
                         new Claim(JwtRegisteredClaimNames.Email, foundUser.Email),
                         new Claim(ClaimTypes.Role, foundUser.IsAdmin.ToString()),
-
                     };
 
-                    //2º define chave de acesso ao token
+                    // Define a chave de acesso ao token
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("key-healthclinic.webapi.auth.dev-senai"));
 
-                    //3º define as credenciais do token
+                    // Define as credenciais do token
                     var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                    //4º Gera o token JWT
+                    // Gera o token JWT
                     var token = new JwtSecurityToken(
-                        // emissor do token
+                        // Emissor do token
                         issuer: "HealthClinic",
-                        // destinatario do token
+                        // Destinatário do token
                         audience: "HealthClinic",
-                        // informações do token
+                        // Informações do token
                         claims: claims,
-                        // duração do token
+                        // Duração do token
                         expires: DateTime.Now.AddMinutes(30),
-                        // credenciais que serão utilizadas
+                        // Credenciais que serão utilizadas
                         signingCredentials: creds
-                        );
+                    );
 
-                    //retorna um ok e o token JWT
+                    // Retorna um Ok e o token JWT
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token)
                     });
-
                 }
 
                 return BadRequest("Email or password invalid.");
-
             }
             catch (Exception e)
             {

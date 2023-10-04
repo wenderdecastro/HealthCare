@@ -6,23 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HealthClinic.Migrations
 {
     /// <inheritdoc />
-    public partial class teste : Migration
+    public partial class mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "CID",
-                columns: table => new
-                {
-                    Codigo = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nome = table.Column<string>(type: "VARCHAR", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CID", x => x.Codigo);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Clinic",
                 columns: table => new
@@ -100,6 +88,79 @@ namespace HealthClinic.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Patient",
+                columns: table => new
+                {
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CPF = table.Column<string>(type: "VARCHAR(11)", maxLength: 11, nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "DATE", nullable: false),
+                    Sex = table.Column<string>(type: "CHAR(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patient", x => x.PatientId);
+                    table.ForeignKey(
+                        name: "FK_Patient_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MedicalAppointment",
+                columns: table => new
+                {
+                    MedicalAppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MedicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Date = table.Column<DateTime>(type: "DATE", nullable: false),
+                    Time = table.Column<TimeSpan>(type: "TIME", nullable: false),
+                    IsActive = table.Column<bool>(type: "BIT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MedicalAppointment", x => x.MedicalAppointmentId);
+                    table.ForeignKey(
+                        name: "FK_MedicalAppointment_Medic_MedicId",
+                        column: x => x.MedicId,
+                        principalTable: "Medic",
+                        principalColumn: "MedicId",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_MedicalAppointment_Patient_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patient",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MedicalRecords",
+                columns: table => new
+                {
+                    MedicalRecordID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChiefComplaint = table.Column<string>(type: "VARCHAR(5096)", nullable: false),
+                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Allergies = table.Column<string>(type: "VARCHAR(5096)", nullable: false),
+                    Diagnostic = table.Column<string>(type: "VARCHAR(5096)", nullable: false),
+                    Prescription = table.Column<string>(type: "VARCHAR(5096)", nullable: false),
+                    MedicalHistory = table.Column<string>(type: "VARCHAR(5096)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MedicalRecords", x => x.MedicalRecordID);
+                    table.ForeignKey(
+                        name: "FK_MedicalRecords_Patient_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patient",
+                        principalColumn: "PatientId",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "FeedBack",
                 columns: table => new
                 {
@@ -127,80 +188,17 @@ namespace HealthClinic.Migrations
                         principalTable: "Medic",
                         principalColumn: "MedicId",
                         onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MedicalAppointment",
-                columns: table => new
-                {
-                    MedicalAppointmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MedicId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Date = table.Column<DateTime>(type: "DATE", nullable: false),
-                    Time = table.Column<TimeSpan>(type: "TIME", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
-                    IsActive = table.Column<bool>(type: "BIT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MedicalAppointment", x => x.MedicalAppointmentId);
                     table.ForeignKey(
-                        name: "FK_MedicalAppointment_Medic_MedicId",
-                        column: x => x.MedicId,
-                        principalTable: "Medic",
-                        principalColumn: "MedicId",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MedicalRecords",
-                columns: table => new
-                {
-                    MedicalRecordID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ChiefComplaint = table.Column<string>(type: "VARCHAR", nullable: false),
-                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Allergies = table.Column<string>(type: "VARCHAR", nullable: false),
-                    Diagnostic = table.Column<string>(type: "VARCHAR", nullable: false),
-                    Prescription = table.Column<string>(type: "VARCHAR", nullable: false),
-                    CID = table.Column<string>(type: "VARCHAR", nullable: false),
-                    MedicalRecordsMedicalRecordID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MedicalRecords", x => x.MedicalRecordID);
-                    table.ForeignKey(
-                        name: "FK_MedicalRecords_MedicalRecords_MedicalRecordsMedicalRecordID",
-                        column: x => x.MedicalRecordsMedicalRecordID,
-                        principalTable: "MedicalRecords",
-                        principalColumn: "MedicalRecordID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Patient",
-                columns: table => new
-                {
-                    PatientId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    MedicalRecordID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CPF = table.Column<string>(type: "VARCHAR(11)", maxLength: 11, nullable: false),
-                    BirthDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    Sex = table.Column<string>(type: "CHAR(1)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Patient", x => x.PatientId);
-                    table.ForeignKey(
-                        name: "FK_Patient_MedicalRecords_MedicalRecordID",
-                        column: x => x.MedicalRecordID,
-                        principalTable: "MedicalRecords",
-                        principalColumn: "MedicalRecordID",
+                        name: "FK_FeedBack_MedicalAppointment_MedicalAppointmentId",
+                        column: x => x.MedicalAppointmentId,
+                        principalTable: "MedicalAppointment",
+                        principalColumn: "MedicalAppointmentId",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Patient_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "UserId",
+                        name: "FK_FeedBack_Patient_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patient",
+                        principalColumn: "PatientId",
                         onDelete: ReferentialAction.NoAction);
                 });
 
@@ -262,11 +260,6 @@ namespace HealthClinic.Migrations
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MedicalRecords_MedicalRecordsMedicalRecordID",
-                table: "MedicalRecords",
-                column: "MedicalRecordsMedicalRecordID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_MedicalRecords_PatientId",
                 table: "MedicalRecords",
                 column: "PatientId",
@@ -279,12 +272,6 @@ namespace HealthClinic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Patient_MedicalRecordID",
-                table: "Patient",
-                column: "MedicalRecordID",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Patient_UserId",
                 table: "Patient",
                 column: "UserId");
@@ -294,52 +281,16 @@ namespace HealthClinic.Migrations
                 table: "User",
                 column: "Email",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FeedBack_MedicalAppointment_MedicalAppointmentId",
-                table: "FeedBack",
-                column: "MedicalAppointmentId",
-                principalTable: "MedicalAppointment",
-                principalColumn: "MedicalAppointmentId",
-                onDelete: ReferentialAction.NoAction);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_FeedBack_Patient_PatientId",
-                table: "FeedBack",
-                column: "PatientId",
-                principalTable: "Patient",
-                principalColumn: "PatientId",
-                onDelete: ReferentialAction.NoAction);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MedicalAppointment_Patient_PatientId",
-                table: "MedicalAppointment",
-                column: "PatientId",
-                principalTable: "Patient",
-                principalColumn: "PatientId",
-                onDelete: ReferentialAction.NoAction);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_MedicalRecords_Patient_PatientId",
-                table: "MedicalRecords",
-                column: "PatientId",
-                principalTable: "Patient",
-                principalColumn: "PatientId",
-                onDelete: ReferentialAction.NoAction);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_MedicalRecords_Patient_PatientId",
-                table: "MedicalRecords");
-
-            migrationBuilder.DropTable(
-                name: "CID");
-
             migrationBuilder.DropTable(
                 name: "FeedBack");
+
+            migrationBuilder.DropTable(
+                name: "MedicalRecords");
 
             migrationBuilder.DropTable(
                 name: "MedicalAppointment");
@@ -348,16 +299,13 @@ namespace HealthClinic.Migrations
                 name: "Medic");
 
             migrationBuilder.DropTable(
+                name: "Patient");
+
+            migrationBuilder.DropTable(
                 name: "Clinic");
 
             migrationBuilder.DropTable(
                 name: "MedicalSpecialty");
-
-            migrationBuilder.DropTable(
-                name: "Patient");
-
-            migrationBuilder.DropTable(
-                name: "MedicalRecords");
 
             migrationBuilder.DropTable(
                 name: "User");

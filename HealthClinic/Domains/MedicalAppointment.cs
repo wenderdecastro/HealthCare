@@ -14,13 +14,19 @@ namespace HealthClinic.Domains
         public Guid PatientId { get; set; }
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
+        public Patient? Patient { get; set; }
 
         [Required(ErrorMessage = "The 'MedicId' field is required.")]
         public Guid MedicId { get; set; }
 
         [ForeignKey(nameof(MedicId))]
-        public Medic Medic { get; set; }
+        public Medic? Medic { get; set; }
+
+        [Required(ErrorMessage = "The 'ClinicId' field is required.")]
+        public Guid ClinicId { get; set; }
+
+        [ForeignKey(nameof(ClinicId))]
+        public Clinic? Clinic { get; set; }
 
         [Column(TypeName = "DATE")]
         [Required(ErrorMessage = "The 'Date' field is required.")]

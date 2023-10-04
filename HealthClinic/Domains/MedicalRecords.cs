@@ -15,7 +15,7 @@ namespace HealthClinic.Domains
         public Guid PatientId { get; set; }
 
         [ForeignKey(nameof(PatientId))]
-        public Patient Patient { get; set; }
+        public Patient? Patient { get; set; }
 
         [Required(ErrorMessage = "The 'ChiefComplaint' field is required.")]
         [Column(TypeName = "VARCHAR(5096)")]

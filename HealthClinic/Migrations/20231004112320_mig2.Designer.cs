@@ -4,6 +4,7 @@ using HealthClinic.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HealthClinic.Migrations
 {
     [DbContext(typeof(HealthClinicContext))]
-    partial class HealthClinicContextModelSnapshot : ModelSnapshot
+    [Migration("20231004112320_mig2")]
+    partial class mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,9 +141,6 @@ namespace HealthClinic.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClinicId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("DATE");
 
@@ -157,8 +157,6 @@ namespace HealthClinic.Migrations
                         .HasColumnType("TIME");
 
                     b.HasKey("MedicalAppointmentId");
-
-                    b.HasIndex("ClinicId");
 
                     b.HasIndex("MedicId");
 
@@ -347,12 +345,6 @@ namespace HealthClinic.Migrations
 
             modelBuilder.Entity("HealthClinic.Domains.MedicalAppointment", b =>
                 {
-                    b.HasOne("HealthClinic.Domains.Clinic", "Clinic")
-                        .WithMany()
-                        .HasForeignKey("ClinicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HealthClinic.Domains.Medic", "Medic")
                         .WithMany()
                         .HasForeignKey("MedicId")
@@ -364,8 +356,6 @@ namespace HealthClinic.Migrations
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Clinic");
 
                     b.Navigation("Medic");
 

@@ -7,6 +7,6 @@ namespace HealthClinic.Interfaces
         void Create(MedicalSpecialty medicalSpecialty);
         void Delete(Guid specialtyId);
         List<MedicalSpecialty> List();
-        List<MedicalSpecialty> GetByMedic(Guid medicId);
+        //List<MedicalSpecialty> GetByMedic(Guid medicId);
     }
 }
